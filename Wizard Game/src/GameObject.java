@@ -5,7 +5,7 @@ public abstract class GameObject {
 	
 	protected int x;
 	protected int y;
-	protected float velocityX = 0;
+	protected float velocityX = 0; //Speed at which objects are moving per second
 	protected float velocityY = 0;
 	protected ID id;
 	
@@ -15,9 +15,9 @@ public abstract class GameObject {
 		this.id = id;
 	}
 	
-	public abstract void tick();
-	public abstract void render(Graphics g);
-	public abstract Rectangle getBounds();
+	public abstract void tick(); //Every object needs to be refreshed after moving
+	public abstract void render(Graphics g); //Every object needs to be drawn on screen
+	public abstract Rectangle getBounds(); //Collision detection
 
 	public int getX() {
 		return x;
