@@ -59,13 +59,22 @@ public class Wizard extends GameObject {
 			}
 			if(tempObj.getID()==ID.Crate) {
 				if(getBounds().intersects(tempObj.getBounds())) {
+					/*
+					 * Cannot get crate if ammo already 100 and if ammo greater then 100, will set ammo to 100 auto
+					 */
 					if(game.ammo==100) {
 						x+=velocityX*-1;
 						y+=velocityY*-1;
 						return;
 					}
-					game.ammo=100;
+					game.ammo+=10;
+					//Make sure ammo does not exceed 100
+					int n = game.ammo;
+					int x = 0;
 					if(game.ammo>100) {
+						n-=100;
+						x=game.ammo-n;
+						game.ammo = x;
 						handler.removeObject(tempObj);
 					}
 					else {
