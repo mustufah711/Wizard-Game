@@ -8,8 +8,9 @@ public abstract class GameObject {
 	protected float velocityX = 0; //Speed at which objects are moving per second
 	protected float velocityY = 0;
 	protected ID id;
+	protected SpriteSheet ss;
 	
-	public GameObject(int x, int y, ID id) {
+	public GameObject(int x, int y, ID id, SpriteSheet ss) {
 		this.x = x;
 		this.y = y;
 		this.id = id;

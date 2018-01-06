@@ -1,14 +1,19 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
 public class Wizard extends GameObject {
 	
 	Handler handler;
+	Game game;
+	private BufferedImage wizard;
 	
-	public Wizard(int x, int y, ID id, Handler handler) {
-		super(x, y, id);
+	public Wizard(int x, int y, ID id, Handler handler, Game game, SpriteSheet ss) {
+		super(x, y, id, ss);
 		this.handler = handler;
+		this.game = game;
+		wizard = ss.grabImage(1, 1, 32, 48);
 	}
 
 	public void tick() {
@@ -52,13 +57,26 @@ public class Wizard extends GameObject {
 					y+= velocityY * -1;
 				}
 			}
+			if(tempObj.getID()==ID.Crate) {
+				if(getBounds().intersects(tempObj.getBounds())) {
+					game.ammo+=10;
+					handler.removeObject(tempObj);
+				}
+			}
+			if(tempObj.getID()==ID.Enemy) {
+				if(getBounds().intersects(tempObj.getBounds())) {
+					game.hp-=100;
+					if(game.hp==0) {
+						handler.removeObject(this);
+					}
+				}
+			}
 		}
 	}
 	
 	//Generates the color and size of the box neeed
 	public void render(Graphics g) {
-		g.setColor(Color.BLUE);
-		g.fillRect(x, y, 32, 48);
+		g.drawImage(wizard, x, y, null);
 	}
 	
 	//Creates dimension of the wizard

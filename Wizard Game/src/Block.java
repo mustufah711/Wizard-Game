@@ -1,12 +1,15 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
 public class Block extends GameObject {
-
-	public Block(int x, int y, ID id) {
-		super(x, y, id);
-		// TODO Auto-generated constructor stub
+	
+	private BufferedImage block;
+	
+	public Block(int x, int y, ID id, SpriteSheet ss) {
+		super(x, y, id, ss);
+		block = ss.grabImage(5, 2, 32, 32);
 	}
 
 	@Override
@@ -17,9 +20,7 @@ public class Block extends GameObject {
 
 	@Override
 	public void render(Graphics g) {
-		// TODO Auto-generated method stub
-		g.setColor(Color.black);
-		g.fillRect(x, y, 32, 32);
+		g.drawImage(block, x, y, null);
 	}
 
 	@Override

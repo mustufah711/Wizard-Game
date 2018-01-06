@@ -1,5 +1,6 @@
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
@@ -14,6 +15,11 @@ public class Game extends Canvas implements Runnable {
 	private Handler handler;
 	private BufferedImage level = null;
 	private Camera camera;
+	int ammo = 100;
+	private BufferedImage sprite_sheet = null;
+	private SpriteSheet ss;
+	private BufferedImage floor = null;
+	public int hp = 100;
 	
 	public Game() {
 		new Window(1000,563,"Wizard Game", this);
@@ -21,9 +27,13 @@ public class Game extends Canvas implements Runnable {
 		handler = new Handler();
 		camera = new Camera(0,0);
 		this.addKeyListener(new KeyInput(handler));
-		this.addMouseListener(new MouseInput(handler, camera));
+	
 		BufferedImageLoader loader = new BufferedImageLoader();
 		level = loader.loadImage("/random.png");
+		sprite_sheet = loader.loadImage("/sprite_sheet.png");
+		ss = new SpriteSheet(sprite_sheet);
+		floor = ss.grabImage(4, 2, 32, 32);
+		this.addMouseListener(new MouseInput(handler, camera, this,ss));
 		loadLevel(level);
 	}
 	
@@ -91,8 +101,13 @@ public class Game extends Canvas implements Runnable {
 		}
 		Graphics g = bs.getDrawGraphics();
 		Graphics2D g2 = (Graphics2D)g;
-		g.setColor(Color.red);
-		g.fillRect(0, 0, 1000, 563);
+		
+		for(int x = 0; x < 30*72; x+=32) {
+			for(int y = 0; y < 30*72; y+=32) {
+				g.drawImage(floor, x, y, null);
+			}
+		}
+		
 		g2.translate(-camera.getX(), -camera.getY());
 		
 		//This section is where we can draw anything we want now and it will show on screen
@@ -101,6 +116,27 @@ public class Game extends Canvas implements Runnable {
 		handler.render(g); //This has to go to the end since you want all objects created on top of background
 		g2.translate(camera.getX(), camera.getY());
 		/////////////////
+		
+		g.setColor(Color.gray);
+		g.fillRect(5, 5, 200, 32);
+		g.setColor(Color.green);
+		g.fillRect(5, 5, hp*2, 32);
+		g.setColor(Color.black);
+		g.drawRect(5, 5, 200, 32);
+		
+		g.setColor(Color.white);
+		g.drawString("Ammo: " + ammo, 5, 50);
+		
+		Graphics g1 = bs.getDrawGraphics();
+		Graphics2D g3 = (Graphics2D)g1;
+		Font font = new Font("TimesRoman",1,37);
+		if(hp==0) {
+			g1.setFont(font);
+			g1.setColor(Color.red);
+			g1.drawString("Game Over", 200,200);
+			g1.drawString("Try Again!", 200, 250);
+		}
+		
 		g.dispose();
 		bs.show();
 	}
@@ -116,15 +152,17 @@ public class Game extends Canvas implements Runnable {
 				int blue = (pixel) & 0xff;
 				
 				if(red==255) {
-					handler.addObject(new Block(x*32, y*32, ID.Block));
+					handler.addObject(new Block(x*32, y*32, ID.Block,ss));
 				}
-				if(blue==255) {
-					handler.addObject(new Wizard(x*32, y*32, ID.Player, handler));
+				if(blue==255 && green==0) {
+					handler.addObject(new Wizard(x*32, y*32, ID.Player, handler, this,ss));
 				}
-				if(green==255) {
-					handler.addObject(new Enemy(x*32, y*32, ID.Enemy, handler));
+				if(green==255 && blue==0) {
+					handler.addObject(new Enemy(x*32, y*32, ID.Enemy, handler,ss));
 				}
-				
+				if(blue==255 && green==255) {
+					handler.addObject(new Crate(x*32,y*32, ID.Crate,ss));
+				}
 			}
 		}
 	}

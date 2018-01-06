@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 
 public class Enemy extends GameObject {
@@ -9,10 +10,12 @@ public class Enemy extends GameObject {
 	Random random = new Random();
 	int choose = 0;
 	int hp = 100;
+	private BufferedImage enemy;
 	
-	public Enemy(int x, int y, ID id, Handler handler) {
-		super(x, y, id);
+	public Enemy(int x, int y, ID id, Handler handler, SpriteSheet ss) {
+		super(x, y, id, ss);
 		this.handler = handler;
+		enemy = ss.grabImage(4, 1, 32, 32);
 	}
 
 	public void tick() {
@@ -47,8 +50,7 @@ public class Enemy extends GameObject {
 	}
 	
 	public void render(Graphics g) {
-		g.setColor(Color.yellow);
-		g.fillRect(x, y, 32, 32);
+		g.drawImage(enemy, x, y, null);
 	}
 
 	public Rectangle getBounds() {

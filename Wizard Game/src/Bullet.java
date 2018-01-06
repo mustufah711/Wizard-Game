@@ -6,8 +6,8 @@ public class Bullet extends GameObject{
 	
 	private Handler handler;
 	
-	public Bullet(int x, int y, ID id, Handler handler, int mx, int my) {
-		super(x, y, id);
+	public Bullet(int x, int y, ID id, Handler handler, int mx, int my, SpriteSheet ss) {
+		super(x, y, id, ss);
 		this.handler = handler;
 		velocityX = (mx-x)/10; //Total travel time, speed bullet moves
 		velocityY = (my-y)/10;
