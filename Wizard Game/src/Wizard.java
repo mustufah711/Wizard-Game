@@ -59,13 +59,23 @@ public class Wizard extends GameObject {
 			}
 			if(tempObj.getID()==ID.Crate) {
 				if(getBounds().intersects(tempObj.getBounds())) {
-					game.ammo+=10;
-					handler.removeObject(tempObj);
+					if(game.ammo==100) {
+						x+=velocityX*-1;
+						y+=velocityY*-1;
+						return;
+					}
+					game.ammo=100;
+					if(game.ammo>100) {
+						handler.removeObject(tempObj);
+					}
+					else {
+						handler.removeObject(tempObj);
+					}
 				}
 			}
 			if(tempObj.getID()==ID.Enemy) {
 				if(getBounds().intersects(tempObj.getBounds())) {
-					game.hp-=100;
+					game.hp--;
 					if(game.hp==0) {
 						handler.removeObject(this);
 					}
