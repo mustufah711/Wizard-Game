@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 public class Game extends Canvas implements Runnable {
 	
@@ -20,6 +21,7 @@ public class Game extends Canvas implements Runnable {
 	private SpriteSheet ss;
 	private BufferedImage floor = null;
 	public int hp = 100;
+	Random rand = new Random();
 	
 	public Game() {
 		new Window(1000,563,"Wizard Game", this);
@@ -27,7 +29,7 @@ public class Game extends Canvas implements Runnable {
 		handler = new Handler();
 		camera = new Camera(0,0);
 		this.addKeyListener(new KeyInput(handler));
-	
+		
 		BufferedImageLoader loader = new BufferedImageLoader();
 		level = loader.loadImage("/random.png");
 		sprite_sheet = loader.loadImage("/sprite_sheet.png");
@@ -166,6 +168,8 @@ public class Game extends Canvas implements Runnable {
 			}
 		}
 	}
+	
+	
 	
 	public static void main(String [] args) {
 		new Game();

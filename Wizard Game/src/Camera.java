@@ -18,8 +18,8 @@ public class Camera {
 			x=1032;
 		if(y<=0)
 			y=0;
-		if(y>=611)
-			y=611;
+		if(y>=1200)
+			y=1200;
 	}
 
 	public float getX() {

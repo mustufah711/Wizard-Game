@@ -1,4 +1,4 @@
 
 public enum ID {
-	Player(), Block(), Crate(), Bullet(), Enemy();
+	Player(), Block(), Crate(), Bullet(), Enemy(), HPCrate();
 }
